@@ -46,10 +46,12 @@ const FileInput: React.FC<FileInputProps> = ({name, label, onGetFile}) => {
             onClick={activateInput}
             disabled
           />
-
           <button
+            type="button"
             onClick={activateInput}
-            className="btn btn-outline-warning">Add image
+            className="btn btn-outline-warning"
+          >
+            Add image
           </button>
         </div>
 

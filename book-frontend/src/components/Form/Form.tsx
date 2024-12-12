@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { useCallback, useState } from 'react';
-import { MessageMutation } from '../../types';
+import { IMessageMutation } from '../../types';
 import FileInput from '../FileInput/FileInput.tsx';
 
 interface Props {
-  onSubmit: (message: MessageMutation) => void;
+  onSubmit: (message: IMessageMutation) => void;
 }
 
 const initialState = {
@@ -13,8 +13,8 @@ const initialState = {
   image: null,
 };
 
-const Form: React.FC = () => {
-  const [oneMessage, setOneMessage] = useState<MessageMutation>(initialState);
+const Form: React.FC<Props> = ({onSubmit}) => {
+  const [oneMessage, setOneMessage] = useState<IMessageMutation>(initialState);
 
   const submitMessage = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,8 +24,12 @@ const Form: React.FC = () => {
       return;
     }
 
-    // onSubmit(oneMessage);
-    console.log(oneMessage)
+    const messageToSubmit = {
+      ...oneMessage,
+      author: oneMessage.author || 'Anonymous',
+    };
+
+    onSubmit(messageToSubmit);
     setOneMessage(initialState);
   };
 
@@ -38,17 +42,16 @@ const Form: React.FC = () => {
     }));
   }, []);
 
-  const getFile = (e:React.ChangeEvent<HTMLInputElement>) => {
-    const {name, files} = e.target;
+  const getFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, files } = e.target;
 
-    if(files) {
-      setOneMessage(prevState => ({
+    if (files) {
+      setOneMessage((prevState) => ({
         ...prevState,
         [name]: files[0],
-      }))
+      }));
     }
   };
-
 
   return (
     <div className="container mt-5">

@@ -9,6 +9,7 @@ const port =  8000;
 app.use(express.json());
 app.use(cors());
 app.use('/book-messages', messagesRouter);
+app.use(express.static('public'));
 
 
 const run = async () => {

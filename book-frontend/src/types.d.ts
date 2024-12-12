@@ -1,12 +1,12 @@
-export interface Message {
+export interface IMessage {
     id: string;
     message: string;
-    author?: string;
-    image?: string;
+    author: string;
+    image: string | null;
 }
 
-export interface MessageMutation {
+export interface IMessageMutation {
   message: string;
-  author?: string;
-  image?: File | null;
+  author: string;
+  image: File | null;
 }

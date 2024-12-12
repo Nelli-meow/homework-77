@@ -1,6 +1,7 @@
 import express from "express";
 import fileDb from "../fileDb";
 import {MessageWithoutId} from "../types";
+import {imagesUpload} from "../multer";
 
 interface bodyContext {
     message: string;
@@ -22,9 +23,9 @@ messagesRouter.get("/",  async (req, res) => {
 
 });
 
-messagesRouter.post("/", async (req, res) => {
+messagesRouter.post("/", imagesUpload.single('image'), async (req, res) => {
 
-        const { message } = req.body.message as bodyContext;
+        const { message } = req.body as bodyContext;
 
         if (!message) {
             res.status(400).send({error:'message must be present and non-empty!'});
@@ -34,7 +35,7 @@ messagesRouter.post("/", async (req, res) => {
         const fullMessage: MessageWithoutId = {
             message: req.body.message,
             author: req.body.author,
-            image: req.body.image,
+            image: req.file ? 'images' + req.file.filename : null,
         };
 
         const savedMessage = await fileDb.addMessage(fullMessage);
