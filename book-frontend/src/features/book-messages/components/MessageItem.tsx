@@ -9,8 +9,6 @@ interface Props {
 
 const MessageItem: React.FC<Props> = ({author, message, image}) => {
 
-  console.log(image);
-
   return (
     <div className="border border-2 rounded-md shadow-sm p-5 mb-5 d-flex align-items-center justify-content-between">
       <h3>{author}</h3>

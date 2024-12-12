@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useCallback, useState } from 'react';
 import { IMessageMutation } from '../../types';
 import FileInput from '../FileInput/FileInput.tsx';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   onSubmit: (message: IMessageMutation) => void;
