@@ -1,32 +1,35 @@
 import * as React from 'react';
 import { useCallback, useState } from 'react';
-import { ChatMessageMutation } from '../../types';
+import { MessageMutation } from '../../types';
+import FileInput from '../FileInput/FileInput.tsx';
 
 interface Props {
-  onSubmit: (message: ChatMessageMutation) => void;
+  onSubmit: (message: MessageMutation) => void;
 }
 
 const initialState = {
   author: '',
   message: '',
+  image: null,
 };
 
 const Form: React.FC = () => {
-  const [oneMessage, setOneMessage] = useState(initialState);
+  const [oneMessage, setOneMessage] = useState<MessageMutation>(initialState);
 
   const submitMessage = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!oneMessage.message) {
-      console.log('Both fields are required.');
+      alert('Please enter a message');
       return;
     }
 
     // onSubmit(oneMessage);
+    console.log(oneMessage)
     setOneMessage(initialState);
   };
 
-  const inputChangeHandler = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+  const inputChangeHandler = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
 
     setOneMessage((prevState) => ({
@@ -35,13 +38,27 @@ const Form: React.FC = () => {
     }));
   }, []);
 
+  const getFile = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const {name, files} = e.target;
+
+    if(files) {
+      setOneMessage(prevState => ({
+        ...prevState,
+        [name]: files[0],
+      }))
+    }
+  };
+
 
   return (
     <div className="container mt-5">
       <h3 className="text-center">Guest book</h3>
-      <form>
+      <form onSubmit={submitMessage}>
         <div className="input-group mb-3">
           <input
+            value={oneMessage.author}
+            name="author"
+            onChange={inputChangeHandler}
             type="text"
             className="form-control"
             placeholder="author"
@@ -50,6 +67,9 @@ const Form: React.FC = () => {
         </div>
         <div className="input-group mb-3">
           <textarea
+            value={oneMessage.message}
+            name="message"
+            onChange={inputChangeHandler}
             type="text"
             className="form-control"
             placeholder="message*"
@@ -57,11 +77,7 @@ const Form: React.FC = () => {
             aria-describedby="button-addon1"/>
         </div>
         <div className="input-group mb-3">
-          <input
-            className="form-control"
-            placeholder="image"
-            aria-label="Example text with button addon"
-            aria-describedby="button-addon1"/>
+         <FileInput name="image" label="Image" onGetFile={getFile}/>
         </div>
         <div className="input-group mb-3">
           <button className="btn btn-outline-info">Submit</button>

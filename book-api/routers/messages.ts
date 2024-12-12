@@ -24,7 +24,7 @@ messagesRouter.get("/",  async (req, res) => {
 
 messagesRouter.post("/", async (req, res) => {
 
-        const { message } = req.body as bodyContext;
+        const { message } = req.body.message as bodyContext;
 
         if (!message) {
             res.status(400).send({error:'message must be present and non-empty!'});

@@ -5,8 +5,8 @@ export interface Message {
     image?: string;
 }
 
-export interface ChatMessageMutation {
+export interface MessageMutation {
   message: string;
   author?: string;
-  image?: string;
+  image?: File | null;
 }
